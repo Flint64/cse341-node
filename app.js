@@ -12,6 +12,7 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 
 const MONGODB_URI = 'mongodb+srv://hego64:tkCBz3UxJ6J0OqwV@cluster0.cgnnu.mongodb.net/shop';
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 const store = new MongoDBStore({
@@ -68,7 +69,7 @@ app.use(errorController.get404);
 
 mongoose.connect(MONGODB_URI)
 .then(result => {
-  app.listen(3000);
+  app.listen(PORT);
 })
 .catch(err => {
   console.log(err);
