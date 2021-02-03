@@ -36,8 +36,10 @@ form {
 
 .main-header__nav {
   height: 100%;
-  display: none;
+  width: 100%;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .main-header__item-list {
@@ -119,6 +121,7 @@ form {
     1px -1px 0 #000,
     -1px 1px 0 #000,
      1px 1px 0 #000;
+     white-space: nowrap;
 }
 
 #side-menu-toggle {
@@ -211,9 +214,28 @@ form {
   color: white;
 }
 
+.user-message{
+  margin: auto;
+  width: 90%;
+  border: 1px solid blue;
+  background: lightcyan;
+  text-align: center;
+  padding: .5rem;
+  border-radius: 3px;
+}
+
+.user-message--error{
+  border: 1px solid red;
+  background: lightcoral;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;
+  }
+
+  .user-message{
+    width: 36rem;
   }
 
   #side-menu-toggle {
