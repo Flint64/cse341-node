@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
+const Review = require('../models/reviews');
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -13,22 +14,34 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(err);
     });
 };
 
+
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(product => {
+
+  //Find reviews
+  //Return single product find
+  //Render product page with info and the reviews
+  Review.find({productId: prodId}).then(reviews => {
+    return Product.findById(prodId).then(product => {
       res.render('shop/product-detail', {
         product: product,
         pageTitle: product.title,
         path: '/products',
-        isAuthenticated: req.session.isLoggedIn
+        reviews: reviews
       });
-    })
-    .catch(err => console.log(err));
+      })
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(err);
+  })
 };
 
 exports.getIndex = (req, res, next) => {
@@ -42,7 +55,9 @@ exports.getIndex = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(err);
     });
 };
 
@@ -59,7 +74,11 @@ exports.getCart = (req, res, next) => {
         // isAuthenticated: req.session.isLoggedIn
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(err);
+    });
 };
 
 exports.postCart = (req, res, next) => {
@@ -81,7 +100,11 @@ exports.postCartDeleteProduct = (req, res, next) => {
     .then(result => {
       res.redirect('/cart');
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(err);
+    });
 };
 
 exports.postOrder = (req, res, next) => {
@@ -107,7 +130,11 @@ exports.postOrder = (req, res, next) => {
     .then(() => {
       res.redirect('/orders');
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(err);
+    });
 };
 
 exports.getOrders = (req, res, next) => {
@@ -120,5 +147,45 @@ exports.getOrders = (req, res, next) => {
         isAuthenticated: req.session.isLoggedIn
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(err);
+    });
 };
+
+exports.postReview = (req, res, next) => {
+  
+  const prodId = req.body.prodId;
+  const reviewBody = req.body.review;
+  const username = req.session.user.username;
+  let reviewsList = [];
+
+    const review = new Review({
+      username: username,
+      review: reviewBody,
+      productId: prodId
+    });
+    review.save()
+      .then(result => {
+        console.log(result);
+        console.log('Created Review');
+
+        Review.find({productId: prodId})
+          .then(reviews => {
+            console.log(reviews);
+            reviewsList = reviews;
+        }).then(
+          Product.findById(prodId).then(product => {
+            res.render('shop/product-detail', {
+              product: product,
+              pageTitle: product.title,
+              path: '/products',
+              reviews: reviewsList
+            });
+          }))
+        })
+        .catch(err => {
+          res.redirect('products/' + prodId);
+        });
+}

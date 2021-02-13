@@ -13,6 +13,35 @@
             <p><%= product.description %></p>
             <% if (isAuthenticated) { %>
                 <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+            <% } %>   
+
+                <br>
+
+        <% if (isAuthenticated) { %>
+            <form id="reviewForm" action="/postReview" method="POST">
+                <input type="hidden" name="prodId" value="<%= product._id %>">
+                <textarea name="review" id="reviewArea" cols="80" rows="6" placeholder="Review Body" ></textarea>
+                <br>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btnStyles" >Post Review</button>
+            </form>
             <% } %>
+
+
+            <% if (reviews.length > 0) { %>
+                <div class="reviews" >
+                <% for (let review of reviews) { %>
+
+                    <div class="review" >  <!-- Duplicate this part -->
+                       <p><b>Posted By:</b> <%= review.username %> </p>
+                        <p><%= review.review %></p>
+                    </div>
+
+                <% } %>
+                </div>
+            <% } else { %>
+                <h1>No Reviews Found!</h1>
+            <% } %>
+
         </main>
         <%- include('../includes/end.ejs') %>

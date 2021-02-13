@@ -39,9 +39,11 @@
                 <li class="main-header__item">
                     <form action="/logout" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit">Logout</button>
+                        <button class="rightButtons" type="submit">Logout</button>
                     </form>
                 </li>
+                <span id="separator">|</span>
+                <a class="rightButtons" href="/profile" >My Profile</a>
             <% } %>
         </ul>
     </nav>

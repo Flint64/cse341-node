@@ -34,6 +34,27 @@ form {
   align-items: center;
 }
 
+.rightButtons{
+  border: none;
+  background: transparent;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+  text-decoration: none;
+}
+
+#separator{
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+  margin-right: 5px;
+  margin-left: -15px;
+}
+
+.rightButtons:hover{
+  color: paleturquoise;
+}
+
 .main-header__nav {
   height: 100%;
   width: 100%;
@@ -228,6 +249,46 @@ form {
   border: 1px solid red;
   background: lightcoral;
 }
+
+.btnStyles{
+  padding: 5px;
+  border-radius: 5px;
+  background-color: white;
+  color: purple;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+  border: 1px solid black;
+}
+.btnStyles:hover{
+   background-color: lightpink;
+   color: white;
+}
+
+.reviews{
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review{
+  border: 1px solid pink;
+  border-radius: 10px;
+  width: 50%;
+  margin-bottom: 2em;
+}
+
+#reviewArea{
+  background-color: lightyellow;
+  margin-top: 3em;
+  border-radius: 10px;
+  border-color: pink;
+}
+
+#reviewArea:focus{
+  border-radius: 10px;
+}
+
 
 @media (min-width: 768px) {
   .main-header__nav {
